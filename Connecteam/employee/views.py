@@ -102,7 +102,7 @@ class FilterEmployeeView(APIView):
             emps = emps.filter(email__name__icontains=email)
 
         if not emps.exists():
-            raise NotFound("No employees found with the provided criteria.")
+            return Response({"detail": "No employees found with the provided criteria."}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = EmployeeSerializer(emps, many=True)
         return Response({'message': 'Employees found', 'data': serializer.data}, status=status.HTTP_200_OK)
