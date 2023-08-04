@@ -32,6 +32,7 @@ The Office Employee and Task Work Management System is a web application designe
 - Database: PostgreSQL
 
 **API Endpoints:**
+
 1. `/api/admin/employees/` (GET, POST, PUT, DELETE)
    - Admin can view all employees, add new employees, update employee details, and delete employees.
 
@@ -43,6 +44,9 @@ The Office Employee and Task Work Management System is a web application designe
 
 4. `/api/employees/<employee_id>/tasks/<task_id>/` (GET, PUT)
    - Employees can view task details and update the task status.
+
+4. `/api/admin/team/` (GET, POST)
+   - Admin can view all Project Teams , add new employees to team , update team details, and delete team.
 
 **Deployment and Security:**
 The application will be deployed on a secure server using HTTPS. Authentication and authorization mechanisms will be implemented to ensure that only authorized users (admin and employees) can access their respective functionalities. User passwords will be securely hashed and stored in the database.
@@ -56,6 +60,8 @@ The Office Employee and Task Work Management System aims to enhance productivity
 
 
 Some additional features you can consider adding to enhance the Office Employee and Task Work Management System:
+
+Fell Free to contribute in the project
 
 1. **Task Comments and Attachments:** Allow employees to add comments or attachments to their assigned tasks. This can help in providing additional context, updates, or supporting documents related to the task.
 
