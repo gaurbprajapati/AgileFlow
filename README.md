@@ -34,7 +34,7 @@ The Office Employee and Task Work Management System is a web application designe
 **API Endpoints:**
 
 1. `/api/admin/employees/` (GET, POST, PUT, DELETE)
-   - Admin can view all employees, add new employees, update employee details, and delete employees.
+   - Admin can view and filter all employees , add new employees, update employee details, and delete employees.
 
 2. `/api/admin/tasks/` (GET, POST)
    - Admin can view all tasks, assign new tasks to employees or teams.
