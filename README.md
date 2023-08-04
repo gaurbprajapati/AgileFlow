@@ -1,11 +1,14 @@
 **Project Name: Office Employee and Task Work Management System**
 
 **Description:**
-The Office Employee and Task Work Management System is a web application designed to streamline the management of employees and tasks within an office environment. The system provides an efficient way for the admin to manage the team, assign tasks, and monitor the progress of each task. Employees can access their assigned tasks, view their details, and update the task status.
+The Office Employee and Task Work Management System is a web application designed to streamline the management of employees and tasks within an office environment.
+The system provides an efficient way for the admin to manage the team, assign tasks, and monitor the progress of each task.
+Admin can new employees in office and can remove, update, and deleten exiting employees from the office.
+Employees can access their assigned tasks, view their details, and update the task status.
 
 **Features:**
 1. **Admin Management:**
-   - Add, remove, update, and delete employees from the office.
+   - Add, remove, update, filter , and delete employees from the office.
    - Assign employees to specific teams, roles, and departments.
    - View and update employee details.
 
