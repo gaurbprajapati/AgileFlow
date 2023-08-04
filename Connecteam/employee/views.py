@@ -7,8 +7,6 @@ from .models import Employee, Role, Department
 from .serializers import EmployeeSerializer, RoleSerializer, DepartmentSerializer
 from django.db.models import Q
 
-# Create your views here.
-
 
 class AllRolesView(APIView):
     def get(self, request):
@@ -91,6 +89,7 @@ class FilterEmployeeView(APIView):
         name = request.data.get('name')
         dept = request.data.get('dept')
         role = request.data.get('role')
+        email = request.data.get('email')
         emps = Employee.objects.all()
         if name:
             emps = emps.filter(Q(first_name__icontains=name)
@@ -99,9 +98,14 @@ class FilterEmployeeView(APIView):
             emps = emps.filter(dept__name__icontains=dept)
         if role:
             emps = emps.filter(role__name__icontains=role)
+        if role:
+            emps = emps.filter(email__name__icontains=email)
+
+        if not emps.exists():
+            raise NotFound("No employees found with the provided criteria.")
 
         serializer = EmployeeSerializer(emps, many=True)
-        return Response(serializer.data)
+        return Response({'message': 'Employees found', 'data': serializer.data}, status=status.HTTP_200_OK)
 
     def get(self, request):
         return Response({"detail": "Method Not Allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
