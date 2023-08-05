@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'team',
     'corsheaders',  # makes sure frontend connected with django
     'rest_framework',
+    'NewEmployee'
 ]
 
 MIDDLEWARE = [
