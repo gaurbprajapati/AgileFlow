@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/', include('task.urls')),
     path('api/', include('team.urls')),
     path('api/', include('NewEmployee.urls')),
+    path('api/user/', include('account.urls'))
 
 ]
