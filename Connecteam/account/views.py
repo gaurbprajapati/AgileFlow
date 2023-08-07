@@ -8,6 +8,10 @@ from account.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 # Create your views here.
+from employee.models import Employee
+# from django.forms.models import model_to_dict
+from django.forms.models import model_to_dict
+from employee.serializers import EmployeeSerializer
 
 
 class hello(APIView):
@@ -58,7 +62,15 @@ class UserProfileView(APIView):
 
     def get(self, request, format=None):
         serializer = UserProfileSerializer(request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # print(serializer.data)
+        emp_detail = Employee.objects.get(email=serializer.data['email'])
+        # print(emp_detail.email)
+        print(model_to_dict(emp_detail))
+        empseri = EmployeeSerializer(emp_detail)
+        # emp_detail_serializer = EmployeeSerializer(emp_detail)
+        # serializer = NewEmployeeSerializer(employee)
+        # return Response(emp_detail_serializer.data)
+        return Response(empseri.data, status=status.HTTP_200_OK)
 
 
 class UserChangePasswordView(APIView):

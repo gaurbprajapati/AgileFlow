@@ -19,7 +19,7 @@ class Role(models.Model):
 
 
 class Employee(models.Model):
-    # email = models.CharField(max_length=255, unique=True)
+    email = models.CharField(max_length=255, unique=True)
     first_name = models.CharField(max_length=100, null=False)
     last_name = models.CharField(max_length=100)
     dept = models.ForeignKey(Department, on_delete=models.CASCADE)
