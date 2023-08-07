@@ -7,9 +7,13 @@ from .models import Task, SubTask
 from .serializers import TaskSerializer, SubTaskSerializer
 from team.models import Team
 from employee.models import Employee
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 
 
 class TaskListCreateAPIView(APIView):
+    
+    permission_classes = [IsAdminUser]
     def get(self, request):
         tasks = Task.objects.all()
         serializer = TaskSerializer(tasks, many=True)
@@ -24,6 +28,8 @@ class TaskListCreateAPIView(APIView):
 
 
 class TaskRetrieveUpdateDeleteAPIView(APIView):
+    
+    permission_classes = [IsAdminUser]
     def get(self, request, task_id):
         try:
             task = Task.objects.get(id=task_id)
@@ -55,6 +61,7 @@ class TaskRetrieveUpdateDeleteAPIView(APIView):
 
 
 class SubTaskListCreateAPIView(APIView):
+    permission_classes = [IsAdminUser]
     def get(self, request, task_id):
         try:
             task = Task.objects.get(id=task_id)

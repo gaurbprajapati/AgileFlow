@@ -6,9 +6,12 @@ from rest_framework import status
 from .models import Employee, Role, Department
 from .serializers import EmployeeSerializer, RoleSerializer, DepartmentSerializer
 from django.db.models import Q
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 class AllRolesView(APIView):
+    permission_classes = [IsAdminUser]
+
     def get(self, request):
         role = Role.objects.all()
         serializer = RoleSerializer(role, many=True)
@@ -29,6 +32,9 @@ class AllRolesView(APIView):
 
 
 class AllDepartmentView(APIView):
+
+    permission_classes = [IsAdminUser]
+
     def get(self, request):
         role = Department.objects.all()
         serializer = DepartmentSerializer(role, many=True)
@@ -48,6 +54,9 @@ class AllDepartmentView(APIView):
 
 
 class AllEmployeeView(APIView):
+
+    permission_classes = [IsAdminUser]
+
     def get(self, request):
         emps = Employee.objects.all()
         serializer = EmployeeSerializer(emps, many=True)
@@ -55,6 +64,9 @@ class AllEmployeeView(APIView):
 
 
 class AddEmployeeView(APIView):
+
+    permission_classes = [IsAdminUser]
+
     def post(self, request):
         serializer = EmployeeSerializer(data=request.data)
         try:
@@ -69,6 +81,9 @@ class AddEmployeeView(APIView):
 
 
 class RemoveEmployeeView(APIView):
+
+    permission_classes = [IsAdminUser]
+
     def get(self, request, emp_id=0):
         if emp_id:
             try:
@@ -85,6 +100,9 @@ class RemoveEmployeeView(APIView):
 
 
 class FilterEmployeeView(APIView):
+
+    permission_classes = [IsAdminUser]
+
     def post(self, request):
         name = request.data.get('name')
         dept = request.data.get('dept')

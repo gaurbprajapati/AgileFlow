@@ -29,10 +29,17 @@ class EmployeeDetailView(APIView):
 
 
 class EmployeeTeamView(APIView):
-    def get(self, request, emp_id):
-        employee = NewEmployee.objects.get(id=emp_id)
-        emp_detail = employee.Employee_details  # Access the related Employee object
+    def get(self, request):
+        employee = Employee.objects.get(id=2)
+        # emp_detail = employee.Employee_details  # Access the related Employee object
         team = Team.objects.all()
 
         serializer = TeamSerializer(team, many=True)
-        return Response(serializer.data)
+
+        # userTeam =[]
+        user_id = 2
+        user_team_names = []
+        for team in serializer.data:
+            if user_id in team["members"]:
+                user_team_names.append(team)
+        return Response(user_team_names)

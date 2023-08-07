@@ -7,11 +7,13 @@ from django.contrib.auth import authenticate
 from account.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-# Create your views here.
 from employee.models import Employee
-# from django.forms.models import model_to_dict
 from django.forms.models import model_to_dict
 from employee.serializers import EmployeeSerializer
+from team.models import Team
+from team.serializers import TeamSerializer
+from task.models import Task, SubTask
+from task.serializers import SubTaskSerializer, TaskSerializer
 
 
 class hello(APIView):
@@ -61,16 +63,74 @@ class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        serializer = UserProfileSerializer(request.user)
-        # print(serializer.data)
-        emp_detail = Employee.objects.get(email=serializer.data['email'])
-        # print(emp_detail.email)
-        print(model_to_dict(emp_detail))
-        empseri = EmployeeSerializer(emp_detail)
-        # emp_detail_serializer = EmployeeSerializer(emp_detail)
-        # serializer = NewEmployeeSerializer(employee)
-        # return Response(emp_detail_serializer.data)
-        return Response(empseri.data, status=status.HTTP_200_OK)
+        try:
+            serializer = UserProfileSerializer(request.user)
+            emp_detail = Employee.objects.get(email=serializer.data['email'])
+            empseri = EmployeeSerializer(emp_detail)
+            return Response(empseri.data, status=status.HTTP_200_OK)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee data not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserTeamView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            serializeruser = UserProfileSerializer(request.user)
+            emp_detail = Employee.objects.get(
+                email=serializeruser.data['email'])
+            serializer = TeamSerializer(Team.objects.all(), many=True)
+            user_id = emp_detail.id
+            for team in serializer.data:
+                if int(user_id) in team["members"]:
+                    return Response(team, status=status.HTTP_200_OK)
+            return Response({"details": f"{serializeruser.data['email']} is not part of any team"}, status=status.HTTP_404_NOT_FOUND)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee data not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserTaskView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            serializeruser = UserProfileSerializer(request.user)
+            emp_detail = Employee.objects.get(
+                email=serializeruser.data['email'])
+            subtask = SubTask.objects.filter(
+                assigned_to=model_to_dict(emp_detail)['id'])
+            serializer = SubTaskSerializer(subtask, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserTaskUpdateView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        try:
+            serializeruser = UserProfileSerializer(request.user)
+            emp_detail = Employee.objects.get(
+                email=serializeruser.data['email'])
+            subtask = SubTask.objects.filter(
+                assigned_to=model_to_dict(emp_detail)['id'])
+            serializer = SubTaskSerializer(subtask, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Employee.DoesNotExist:
+            return Response({"error": "Employee not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UserChangePasswordView(APIView):
